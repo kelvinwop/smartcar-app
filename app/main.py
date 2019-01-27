@@ -103,7 +103,7 @@ def vehicle():
     }
     
     #lock function
-    lockStatus = 'Locked'
+    lockStatus = ''
     def lock():
         vehicle.lock()
         lockStatus = 'Locked'
