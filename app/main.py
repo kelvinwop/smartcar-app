@@ -101,40 +101,26 @@ def vehicle():
         'longitude' : lon,
         'vin' : vehicle.vin() # vin number
     }
+    
+    #lock function
+    lockStatus = 'Locked'
+    def lock():
+        vehicle.lock()
+        lockStatus = 'Locked'
+
+        return '',200
+    def unlock():
+        vehicle.unlock()
+        lockStatus = 'Locked'
+
+        return '',200
+
 
     print()
 
     print(info)
 
     return render_template("controlcenter.html", stats=stats)
-
-'''
-@app.route('/userApp', methods=['GET'])
-def userApp():
-    global access
-    vehicle_ids = smartcar.get_vehicle_ids(
-        access['access_token'])['vehicles']
-
-    # instantiate the first vehicle in the vehicle id list
-    vehicle = smartcar.Vehicle(vehicle_ids[0], access['access_token'])
-
-    coordinates = vehicle.location()
-    mileage = vehicle.odometer()
-    oilChangemiles = mileage + 1560
-    milesUntilOil_Change = oilChangemiles - mileage
-    
-    isLocked = vehicle.lock()
-    
-    if isLocked == 'success':
-        isLocked = 'Locked'
-    else:
-        isLocked = 'Unlocked'
-
-    stats = {
-        "OilMiles": milesUntilOil_Change,
-        "lockStatus":isLocked,
-    }
-    return 'howdy',200'''
 
 if __name__ == '__main__':
     app.run(port=8000)
