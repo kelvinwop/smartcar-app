@@ -12,6 +12,7 @@ with open("SERVER_SECRET.json", 'r') as f:
 app = Flask(__name__)
 CORS(app)
 access = None
+vehicle = None
 # TODO: Authorization Step 1a: Launch Smartcar authentication dialog
 client = smartcar.AuthClient(
     client_id=AUTH["CLIENT_ID"],
@@ -58,6 +59,7 @@ def exchange():
 def vehicle():
     # access our global variable to retrieve our access tokens
     global access
+    global vehicle
     # the list of vehicle ids
     try:
         vehicle_ids = smartcar.get_vehicle_ids(
@@ -73,10 +75,6 @@ def vehicle():
 
     # vehicle info: id, make, model, year
     info = vehicle.info()
-
-    def log_out():
-        vehicle.disconnect()
-        return 'link'
 
     # coordinates of current location: lat, long
     coordinates = vehicle.location()
@@ -107,6 +105,14 @@ def vehicle():
     print(info)
 
     return render_template("controlcenter.html", stats=stats)
+
+@app.route('/logout')
+def log_out():
+    global vehicle
+    if(vehicle is not None):
+        vehicle.disconnect()
+        vehicle = None
+    return redirect("/index")
 
 '''
 @app.route('/userApp', methods=['GET'])
