@@ -30,7 +30,7 @@ client = smartcar.AuthClient(
         'control_security',
         'read_vin',
       ],
-    test_mode=True,
+    test_mode=False,
 )
 
 @app.route('/')
