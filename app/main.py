@@ -2,6 +2,11 @@ import smartcar
 from flask import Flask, redirect, request, jsonify, render_template
 from flask_cors import CORS
 import os
+import json
+
+#load server secrets
+with open("SERVER_SECRET.json", 'r') as f:
+    AUTH = json.load(f)
 
 # ./main.py
 app = Flask(__name__)
@@ -12,6 +17,9 @@ client = smartcar.AuthClient(
     client_id=os.environ.get('CLIENT_ID'),
     client_secret=os.environ.get('CLIENT_SECRET'),
     redirect_uri=os.environ.get('REDIRECT_URI'),
+    client_id=AUTH["CLIENT_ID"],
+    client_secret=AUTH["CLIENT_SECRET"],
+    redirect_uri=AUTH["REDIRECT_URI"],
     scope=[
         'read_vehicle_info',
         'read_location',
@@ -27,6 +35,11 @@ def mainPage():
 '''def logOut():'''
 
 @app.route('/')
+@app.route('/index')
+def home():
+    return render_template("index.html")
+
+
 @app.route('/login', methods=['GET'])
 def login():
     # TODO: Authorization Step 1b: Launch Smartcar authentication dialog
@@ -84,6 +97,7 @@ def vehicle():
     print(info)
 
     return 'succesfully completed'
+    return render_template("controlcenter.html", stats=stats)
 
 '''
 @app.route('/userApp', methods=['GET'])
