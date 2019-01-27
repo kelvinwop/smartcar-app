@@ -55,35 +55,40 @@ def vehicle():
     # instantiate the first vehicle in the vehicle id list
     vehicle = smartcar.Vehicle(vehicle_ids[0], access['access_token'])
 
+    # vehicle info: id, make, model, year
     info = vehicle.info()
-    #coordinates of current location
+
+    def log_out():
+        vehicle.disconnect()
+        return 'link'
+
+    # coordinates of current location: lat, long
     coordinates = vehicle.location()
     lat = coordinates['data']['latitude']
     lon = coordinates['data']['longitude']
 
-    #odometer on kilometers
-    mileage = vehicle.odometer()
-    oilChangemiles = mileage['data']['distance'] + 3000
-    miles_UntilOil_Change = 0.621*(oilChangemiles - mileage['data']['distance'])
-    mileageOriginal = mileage['data']['distance']*0.621
-    
+    # odometer info in kilometers
+    distance = vehicle.odometer()
+    dist_to_miles = 0.621371 * distance['data']['distance']
+    oil_change_dist = dist_to_miles + 3000
+    miles_until_oil_change = oil_change_dist - dist_to_miles
 
-    #dictionary with stats from car
+    # dictionary of stats from car
     stats = {
-        "id":info['id'],
-        "Make":info['make'],
-        "Model":info['model'],
-        "Year":info['year'],
-        "Mileage":mileageOriginal,
-        "OilMiles": miles_UntilOil_Change,
-        "latitude":lat,
-        "longitude":lon,
+        'id' : info['id'],
+        'make' : info['make'],
+        'model' : info['model'],
+        'year' : info['year'],
+        'total_mileage' : dist_to_miles,
+        'oil_miles' : miles_until_oil_change,
+        'latitude' : lat,
+        'longitude' : lon,
+        'vin' : vehicle.vin() # vin number
     }
 
+    print()
 
-    print(info)
-
-    return 'succesfully completed'
+    return jsonify()
 
 '''
 @app.route('/userApp', methods=['GET'])
