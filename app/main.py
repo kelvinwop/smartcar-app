@@ -12,7 +12,8 @@ with open("SERVER_SECRET.json", 'r') as f:
 app = Flask(__name__)
 CORS(app)
 access = None
-vehicle = None
+vehicle = []
+current = 0
 # TODO: Authorization Step 1a: Launch Smartcar authentication dialog
 client = smartcar.AuthClient(
     client_id=AUTH["CLIENT_ID"],
@@ -52,7 +53,7 @@ def exchange():
     return redirect("/vehicle")
 
 @app.route('/vehicle', methods=['GET'])
-def vehicle():
+def meth_vehicle():
     # access our global variable to retrieve our access tokens
     global access
     global vehicle
@@ -65,65 +66,74 @@ def vehicle():
         print(ex)
         return redirect("/login")
 
+    info = []
+    vnum = request.args.get('vehicle_number', default = 0, type = int)
+    global current
+    current = vnum
 
-    # instantiate the first vehicle in the vehicle id list
-    vehicle = smartcar.Vehicle(vehicle_ids[0], access['access_token'])
-
-    # vehicle info: id, make, model, year
-    info = vehicle.info()
-
+    for i in vehicle_ids:
+        # instantiate the first vehicle in the vehicle id list
+        vehicle.append(smartcar.Vehicle(i, access['access_token']))
+        # vehicle info: id, make, model, year
+        info.append(vehicle[len(vehicle)-1].info())
+    #print(info)
+    
+    #print("current vehicle = ",vnum)
     # coordinates of current location: lat, long
-    coordinates = vehicle.location()
+    coordinates = vehicle[vnum].location()
     lat = coordinates['data']['latitude']
     lon = coordinates['data']['longitude']
 
+
     # odometer info in kilometers
-    distance = vehicle.odometer()
+    distance = vehicle[vnum].odometer()
     dist_to_miles = round(0.621371 * distance['data']['distance'], 2)
     oil_change_dist = dist_to_miles + 3000
     miles_until_oil_change = oil_change_dist - dist_to_miles
 
+    
     # dictionary of stats from car
     stats = {
-        'id' : info['id'],
-        'make' : info['make'],
-        'model' : info['model'],
-        'year' : info['year'],
+        'id' : info[vnum]['id'],
+        'make' : info[vnum]['make'],
+        'model' : info[vnum]['model'],
+        'year' : info[vnum]['year'],
         'total_mileage' : dist_to_miles,
         'oil_miles' : miles_until_oil_change,
         'latitude' : lat,
         'longitude' : lon,
-        'vin' : vehicle.vin() # vin number
+        'vin' : vehicle[vnum].vin() # vin number
     }
-
-
-    
-
-    print()
-
-    print(info)
+    print(stats)
 
     return render_template("controlcenter.html", stats=stats)
 
 @app.route('/logout')
 def log_out():
+    global access
     global vehicle
-    if(vehicle is not None):
-        vehicle.disconnect()
-        vehicle = None
+    if(access is not None):
+        vehicle[0].disconnect()
+        vehicle = []
+        access = None
     return redirect("/index")
 
 @app.route('/lockcurvehicle')
 def lock_current_vehicle():
+    global access
     global vehicle
-    if vehicle is not None:
-        vehicle.lock()
+    global current
+    if access is not None and len(vehicle) > 0:
+        vehicle[current].lock()
     return redirect('/vehicle')
 
 @app.route('/unlockcurvehicle')
 def unlock():
-    if vehicle is not None:
-        vehicle.unlock()
+    global access
+    global vehicle
+    global current
+    if access is not None and len(vehicle) > 0:
+        vehicle[current].unlock()
     return redirect('/vehicle')
 
 
