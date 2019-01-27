@@ -14,9 +14,6 @@ CORS(app)
 access = None
 # TODO: Authorization Step 1a: Launch Smartcar authentication dialog
 client = smartcar.AuthClient(
-    client_id=os.environ.get('CLIENT_ID'),
-    client_secret=os.environ.get('CLIENT_SECRET'),
-    redirect_uri=os.environ.get('REDIRECT_URI'),
     client_id=AUTH["CLIENT_ID"],
     client_secret=AUTH["CLIENT_SECRET"],
     redirect_uri=AUTH["REDIRECT_URI"],
@@ -96,7 +93,6 @@ def vehicle():
 
     print(info)
 
-    return 'succesfully completed'
     return render_template("controlcenter.html", stats=stats)
 
 '''
