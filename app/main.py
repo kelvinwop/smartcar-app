@@ -58,13 +58,13 @@ def meth_vehicle():
     global access
     global vehicle
     # the list of vehicle ids
-    try:
-        vehicle_ids = smartcar.get_vehicle_ids(
-            access['access_token'])['vehicles']
-        print("access successful")
-    except TypeError as ex:
-        print(ex)
+    
+    if access is None:
         return redirect("/login")
+
+    vehicle_ids = smartcar.get_vehicle_ids(
+        access['access_token'])['vehicles']
+        
 
     info = []
     vnum = request.args.get('vehicle_number', default = 0, type = int)
