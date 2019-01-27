@@ -112,7 +112,7 @@ def vehicle():
     # unlock function
     def unlock():
         vehicle.unlock()
-        lockStatus = 'Locked'
+        lockStatus = 'Unlocked'
 
         return '',200
 
