@@ -18,18 +18,24 @@ client = smartcar.AuthClient(
     test_mode=True
 )
 
+
+#home page
 @app.route('/')
 @app.route('/index')
 def home():
     return render_template('index.html')
 
 
+#Authorization Step 1b: Launch Smartcar authorization dialog
 @app.route('/login', methods=['GET'])
 def login():
     auth_url = client.get_auth_url()
     return redirect(auth_url)
 
 
+#Authorization Step 3: Handle Smartcar response
+#Request Step 1: Obtain an access token
+#
 @app.route('/exchange', methods=['GET'])
 def exchange():
     code = request.args.get('code')
@@ -42,6 +48,10 @@ def exchange():
     return '', 200
 
 
+
+#Request Step 2: Get vehicle ids
+#Request Step 3: Create a vehicle
+#Request Step 4: Make a request to Smartcar API
 @app.route('/vehicle', methods=['GET'])
 def vehicle():
     # access our global variable to retrieve our access tokens
