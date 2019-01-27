@@ -3,10 +3,13 @@ from flask import Flask, redirect, request, jsonify, render_template
 from flask_cors import CORS
 import os
 import json
+import sqlite3
 
 #load server secrets
 with open("SERVER_SECRET.json", 'r') as f:
     AUTH = json.load(f)
+
+conn = sqlite3.connect("db.sqlite")
 
 # ./main.py
 app = Flask(__name__)

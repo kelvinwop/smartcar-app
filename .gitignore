@@ -106,3 +106,4 @@ venv.bak/
 
 #secrets
 SERVER_SECRET.json
+*.sqlite

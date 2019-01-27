@@ -71,7 +71,7 @@
             <div class="row features">
                 <div class="col-sm-6 col-lg-4 item"><i class="fa fa-list-alt icon"></i>
                     <h3 class="name">Car Information</h3>
-                    <h4 class="description">Make: {{stats.make}}<br>Model: {{stats.model}}<br>Year: {{stats.year}}</h4>
+                    <h4 class="description">Make: {{stats.make}}<br>Model: {{stats.model}}<br>Year: {{stats.year}}<br>VIN: {{stats.vin}}</h4>
                 </div>
                 <div class="col-sm-6 col-lg-4 item"><i class="fa fa-line-chart icon"></i>
                     <h3 class="name">Mileage</h3>
@@ -108,8 +108,7 @@
             console.log(lat);
             console.log(long);
             //replace 0,-0 with lat, -long for car loc
-            var marker = L.marker([lat, long]).addTo(mymap);
-            marker.bindPopup("<b>Your car is here</b>");
+            var marker = L.marker([lat, long]).addTo(mymap).bindPopup("<b>Your car is here</b>").openPopup();
             mymap.setView([lat, long], 7);
         })();        
     </script>
