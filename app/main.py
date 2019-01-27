@@ -113,13 +113,9 @@ def vehicle():
     def unlock():
         vehicle.unlock()
         lockStatus = 'Unlocked'
-
         return '',200
 
 
-    print()
-
-    print(info)
 
     return render_template("controlcenter.html", stats=stats)
 
