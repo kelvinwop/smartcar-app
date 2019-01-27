@@ -1,9 +1,9 @@
 This is our web application.
 
-This kit contains a simple web application that displays car information using Smartcar's Python SDK.
+This application displays car information, odometer readings, ability to lock and unlock the car, and estimate how long the user can drive until the next oil change by using Javascript and Smartcar's Python SDK.
 
 ## Instructions
-Before we get started, create an application on Smartcar's Developer Dashboard to get your API keys.
+Before we got started, we had create an application on Smartcar's Developer Dashboard to get our API keys to test.
 
 **Note:** On the dashboard, you will want to set your `redirect_uri` as `http://localhost:8000/exchange`.
 
@@ -14,7 +14,7 @@ set CLIENT_SECRET=<your-client-secret>
 set REDIRECT_URI=http://localhost:8000/exchange
 ```
 
-Make sure you have cloned this repo -
+We started by cloning this repo -
 ```bash
 git clone https://github.com/smartcar/getting-started-python-sdk.git
 cd getting-started-python-sdk/app
