@@ -52,15 +52,21 @@ def exchange():
     # in a production app you'll want to store this in some kind of
     # persistent storage
     access = client.exchange_code(code)
-    return 'Hello', 200
+    return redirect("/vehicle")
 
 @app.route('/vehicle', methods=['GET'])
 def vehicle():
     # access our global variable to retrieve our access tokens
     global access
     # the list of vehicle ids
-    vehicle_ids = smartcar.get_vehicle_ids(
-        access['access_token'])['vehicles']
+    try:
+        vehicle_ids = smartcar.get_vehicle_ids(
+            access['access_token'])['vehicles']
+        print("access successful")
+    except TypeError as ex:
+        print(ex)
+        return redirect("/login")
+
 
     # instantiate the first vehicle in the vehicle id list
     vehicle = smartcar.Vehicle(vehicle_ids[0], access['access_token'])
@@ -79,7 +85,7 @@ def vehicle():
 
     # odometer info in kilometers
     distance = vehicle.odometer()
-    dist_to_miles = 0.621371 * distance['data']['distance']
+    dist_to_miles = round(0.621371 * distance['data']['distance'], 2)
     oil_change_dist = dist_to_miles + 3000
     miles_until_oil_change = oil_change_dist - dist_to_miles
 

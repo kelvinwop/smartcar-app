@@ -50,11 +50,11 @@
             <div class="row features">
                 <div class="col-sm-6 col-lg-4 item"><i class="fa fa-list-alt icon"></i>
                     <h3 class="name">Car Information</h3>
-                    <h4 class="description">Make: {{stats.Make}}<br>Model: {{stats.Model}}<br>Year: {{stats.Year}}</h4>
+                    <h4 class="description">Make: {{stats.make}}<br>Model: {{stats.model}}<br>Year: {{stats.year}}</h4>
                 </div>
                 <div class="col-sm-6 col-lg-4 item"><i class="fa fa-line-chart icon"></i>
                     <h3 class="name">Mileage</h3>
-                    <h4 class="description">{{stats.Mileage}} Miles total<br>{{stats.OilMiles}} Miles to next oil change</h4>
+                    <h4 class="description">{{stats.total_mileage}} Miles total<br>{{stats.oil_miles}} Miles to next oil change</h4>
                 </div>
                 <div class="col-sm-6 col-lg-4 item"><i class="fa fa-lock icon"></i>
                     <h3 class="name">Car Lock Status</h3>
@@ -82,9 +82,9 @@
                 accessToken: 'pk.eyJ1Ijoia2Vsdmlud29wIiwiYSI6ImNqbzNmeGZ0azB3dGszcHBnNXozd3pxcnUifQ.5VlvIjqb7bojxPIA1OOkMA'
             }).addTo(mymap);
             //replace 0,-0 with lat, -long for car loc
-            var marker = L.marker([{{stats.Latitude}}, -{{stats.Longitude}}]).addTo(mymap);
-            marker.bindPopup("<b>Your car is here</b>");
-            mymap.setView([{{stats.Latitude}}, -{{stats.Longitude}}], 7);
+            //var marker = L.marker([{{stats.Latitude}}, -{{stats.Longitude}}]).addTo(mymap);
+            //marker.bindPopup("<b>Your car is here</b>");
+            mymap.setView([0, 0], 7);
         })();        
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
