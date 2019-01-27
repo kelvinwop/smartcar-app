@@ -58,7 +58,7 @@ def meth_vehicle():
     global access
     global vehicle
     # the list of vehicle ids
-    
+
     if access is None:
         return redirect("/login")
 
@@ -67,15 +67,22 @@ def meth_vehicle():
         
 
     info = []
+    vehicle_description_tuple = []
     vnum = request.args.get('vehicle_number', default = 0, type = int)
     global current
     current = vnum
 
+    k = 0
     for i in vehicle_ids:
         # instantiate the first vehicle in the vehicle id list
-        vehicle.append(smartcar.Vehicle(i, access['access_token']))
+        cur_v = smartcar.Vehicle(i, access['access_token'])
+        vehicle.append(cur_v)
         # vehicle info: id, make, model, year
-        info.append(vehicle[len(vehicle)-1].info())
+        v_in=vehicle[len(vehicle)-1].info()
+        info.append(v_in)
+        vehicle_description_tuple.append((k,str(v_in['year'])+" "+v_in['make']+" "+v_in['model']+" ("+cur_v.vin()[-5:]+")"))
+        k+=1
+
     #print(info)
     
     #print("current vehicle = ",vnum)
@@ -102,9 +109,10 @@ def meth_vehicle():
         'oil_miles' : miles_until_oil_change,
         'latitude' : lat,
         'longitude' : lon,
-        'vin' : vehicle[vnum].vin() # vin number
+        'vin' : vehicle[vnum].vin(), # vin number
+        'vehicle_description_tuple' : vehicle_description_tuple
     }
-    print(stats)
+    #print(stats)
 
     return render_template("controlcenter.html", stats=stats)
 
