@@ -19,16 +19,24 @@
     integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
     crossorigin=""></script> 
     <style>
-        #mapid { height: 420px; }
+        #mapid { 
+            height: 420px;
+        }
 
         #primary_title {
             text-align: center;
             padding-bottom: 50px;
         }
+
+        #gimmespacebitch {
+            padding-top: 100px;
+        }
     </style>
 </head>
 
 <body>
+    <input type="hidden" id="lat" value="{{stats.latitude}}">
+    <input type="hidden" id="long" value="{{stats.longitude}}">
     <div>
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
             <div class="container"><a class="navbar-brand" href="/index">Smartcar Control Center</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
@@ -81,14 +89,21 @@
                 id: 'mapbox.streets',
                 accessToken: 'pk.eyJ1Ijoia2Vsdmlud29wIiwiYSI6ImNqbzNmeGZ0azB3dGszcHBnNXozd3pxcnUifQ.5VlvIjqb7bojxPIA1OOkMA'
             }).addTo(mymap);
+            var lat = document.getElementById("lat").value;
+            var long = document.getElementById("long").value;
+            console.log(lat);
+            console.log(long);
             //replace 0,-0 with lat, -long for car loc
-            //var marker = L.marker([{{stats.Latitude}}, -{{stats.Longitude}}]).addTo(mymap);
-            //marker.bindPopup("<b>Your car is here</b>");
-            mymap.setView([0, 0], 7);
+            var marker = L.marker([lat, long]).addTo(mymap);
+            marker.bindPopup("<b>Your car is here</b>");
+            mymap.setView([lat, long], 7);
         })();        
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+    <div id="gimmespacebitch">
+    </div>
+
 </body>
 
 </html>
