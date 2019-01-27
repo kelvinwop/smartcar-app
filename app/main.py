@@ -1,5 +1,6 @@
 import smartcar
 from flask import Flask, redirect, request, jsonify, render_template
+from smartcar.exceptions import AuthenticationException
 from flask_cors import CORS
 import os
 import json
@@ -65,8 +66,13 @@ def meth_vehicle():
     if access is None:
         return redirect("/login")
 
-    vehicle_ids = smartcar.get_vehicle_ids(
-        access['access_token'])['vehicles']
+    try:
+        vehicle_ids = smartcar.get_vehicle_ids(
+            access['access_token'])['vehicles']
+    except AuthenticationException:
+        access = None
+        vehicle = []
+        return redirect("/login")
         
 
     info = []
