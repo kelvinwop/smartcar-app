@@ -7,11 +7,13 @@ Before we got started, we had create an application on Smartcar's Developer Dash
 
 **Note:** On the dashboard, you will want to set your `redirect_uri` as `http://localhost:8000/exchange`.
 
-Then, we can set these as environment variables in Command Prompt on Windows -
-```bash
-set CLIENT_ID=<your-client-id>
-set CLIENT_SECRET=<your-client-secret>
-set REDIRECT_URI=http://localhost:8000/exchange
+Then, we create a file called SERVER_SECRET.json in /app
+```json
+{
+    "CLIENT_ID":"<your-client-id>",
+    "CLIENT_SECRET":"<your-client-secret>",
+    "REDIRECT_URI":"http://localhost:8000/exchange"
+}
 ```
 
 We started by cloning this repo -
