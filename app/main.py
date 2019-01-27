@@ -102,13 +102,14 @@ def vehicle():
         'vin' : vehicle.vin() # vin number
     }
     
-    #lock function
+    # lock function
     lockStatus = ''
     def lock():
         vehicle.lock()
         lockStatus = 'Locked'
-
         return '',200
+
+    # unlock function
     def unlock():
         vehicle.unlock()
         lockStatus = 'Locked'
