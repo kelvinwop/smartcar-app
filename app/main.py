@@ -10,6 +10,11 @@ CORS(app)
 # global variable to save our access_token
 access = None
 
+# ./main.py
+app = Flask(__name__)
+CORS(app)
+access = None
+# TODO: Authorization Step 1a: Launch Smartcar authentication dialog
 client = smartcar.AuthClient(
     client_id=os.environ.get('CLIENT_ID'),
     client_secret=os.environ.get('CLIENT_SECRET'),
@@ -24,6 +29,12 @@ client = smartcar.AuthClient(
 @app.route('/index')
 def home():
     return render_template('index.html')
+  
+
+'''@app.route('usersApp')
+def mainPage():
+    return render_template()'''
+def logOut()
 
 
 #Authorization Step 1b: Launch Smartcar authorization dialog
@@ -45,7 +56,7 @@ def exchange():
     # in a production app you'll want to store this in some kind of
     # persistent storage
     access = client.exchange_code(code)
-    return '', 200
+    return 'Hello', 200
 
 
 
@@ -67,7 +78,16 @@ def vehicle():
     print(info)
 
     return jsonify(info)
+  
+@app.route('/userApp', methods=['GET'])
+def userApp():
+    global access
+    access['access_token'])['vehicles']
+    vehicle = smartcar.Vehicle(vehicle_ids[0], access['access_token'])
+
 
 
 if __name__ == '__main__':
     app.run(port=8000)
+
+
