@@ -100,6 +100,9 @@ def vehicle():
         'vin' : vehicle.vin() # vin number
     }
 
+
+    
+
     print()
 
     print(info)
@@ -114,33 +117,19 @@ def log_out():
         vehicle = None
     return redirect("/index")
 
-'''
-@app.route('/userApp', methods=['GET'])
-def userApp():
-    global access
-    vehicle_ids = smartcar.get_vehicle_ids(
-        access['access_token'])['vehicles']
+@app.route('/lockcurvehicle')
+def lock_current_vehicle():
+    global vehicle
+    if vehicle is not None:
+        vehicle.lock()
+    return redirect('/vehicle')
 
-    # instantiate the first vehicle in the vehicle id list
-    vehicle = smartcar.Vehicle(vehicle_ids[0], access['access_token'])
+@app.route('/unlockcurvehicle')
+def unlock():
+    if vehicle is not None:
+        vehicle.unlock()
+    return redirect('/vehicle')
 
-    coordinates = vehicle.location()
-    mileage = vehicle.odometer()
-    oilChangemiles = mileage + 1560
-    milesUntilOil_Change = oilChangemiles - mileage
-    
-    isLocked = vehicle.lock()
-    
-    if isLocked == 'success':
-        isLocked = 'Locked'
-    else:
-        isLocked = 'Unlocked'
-
-    stats = {
-        "OilMiles": milesUntilOil_Change,
-        "lockStatus":isLocked,
-    }
-    return 'howdy',200'''
 
 if __name__ == '__main__':
     app.run(port=8000)
