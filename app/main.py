@@ -27,10 +27,6 @@ client = smartcar.AuthClient(
       ],
     test_mode=True,
 )
-'''@app.route('usersApp')
-def mainPage():
-    return render_template()'''
-'''def logOut():'''
 
 @app.route('/')
 @app.route('/index')
